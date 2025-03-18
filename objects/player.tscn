@@ -1,0 +1,83 @@
+[gd_scene load_steps=17 format=3 uid="uid://c1abrg1m6mll6"]
+
+[ext_resource type="Texture2D" uid="uid://bb2cmudwhp7ge" path="res://assets/sample_sprite/run-1.png" id="1_3rfka"]
+[ext_resource type="Script" uid="uid://cdawksodvqin7" path="res://ecs/entity.gd" id="1_i8sra"]
+[ext_resource type="Texture2D" uid="uid://c32ylcov88bee" path="res://assets/sample_sprite/run-2.png" id="2_i8sra"]
+[ext_resource type="Texture2D" uid="uid://dir2uxk0aaeyq" path="res://assets/sample_sprite/run-3.png" id="3_4vq5b"]
+[ext_resource type="Texture2D" uid="uid://dye5k7w87ei8k" path="res://assets/sample_sprite/run-4.png" id="4_3nfmf"]
+[ext_resource type="Texture2D" uid="uid://bcs55lvkywui7" path="res://assets/sample_sprite/run-5.png" id="5_42cpl"]
+[ext_resource type="Texture2D" uid="uid://st330jy1c7a6" path="res://assets/sample_sprite/run-6.png" id="6_vqq2l"]
+[ext_resource type="Texture2D" uid="uid://csbbhy5hdglld" path="res://assets/sample_sprite/run-7.png" id="7_r673r"]
+[ext_resource type="Texture2D" uid="uid://bhrqpqfcibqc1" path="res://assets/sample_sprite/run-8.png" id="8_mqnmn"]
+[ext_resource type="Script" uid="uid://beorewtjke25x" path="res://component/player_movement_control.gd" id="10_4vq5b"]
+[ext_resource type="Script" uid="uid://v4q47i32k0sn" path="res://component/health.gd" id="11_3nfmf"]
+[ext_resource type="Script" uid="uid://bo4vd6dpev208" path="res://component/movement.gd" id="11_42cpl"]
+[ext_resource type="Script" uid="uid://dx68mnp850bod" path="res://component/transform.gd" id="13_vqq2l"]
+[ext_resource type="AudioStream" uid="uid://bwyhou2p62ppf" path="res://assets/walking.mp3" id="14_r673r"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5esnd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3rfka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_i8sra")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4vq5b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3nfmf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_42cpl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vqq2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_r673r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_mqnmn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rfka"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_i8sra")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5esnd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3rfka")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("11_3nfmf")
+metadata/_custom_type_script = "uid://v4q47i32k0sn"
+
+[node name="Movement" type="Node" parent="." node_paths=PackedStringArray("body", "walk_sound")]
+script = ExtResource("11_42cpl")
+body = NodePath("..")
+walk_sound = NodePath("../AudioStreamPlayer2D")
+metadata/_custom_type_script = "uid://bo4vd6dpev208"
+
+[node name="PlayerMovementControl" type="Node" parent="." node_paths=PackedStringArray("body", "collision")]
+script = ExtResource("10_4vq5b")
+body = NodePath("..")
+collision = NodePath("..")
+metadata/_custom_type_script = "uid://beorewtjke25x"
+
+[node name="Transform" type="Node" parent="." node_paths=PackedStringArray("reference")]
+script = ExtResource("13_vqq2l")
+reference = NodePath("..")
+metadata/_custom_type_script = "uid://dx68mnp850bod"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_r673r")
